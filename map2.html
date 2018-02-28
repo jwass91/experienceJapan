@@ -1,0 +1,1224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Map | Experience Japan</title>
+
+    <!-- Bootstrap core CSS -->
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="carousel.css" rel="stylesheet">
+    <link href="product.css" rel="stylesheet">
+
+     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%;margin-top:50px; }
+    </style> 
+
+     </head>
+  <body>
+
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="home.html">Experience Japan</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="itinerary.html">Itinerary</a>
+            </li>
+            
+            <li class="nav-item active">
+              <a class="nav-link" href="map.html">Map</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+<style>
+.map-overlay-container {
+    position: absolute;
+    width: 25%;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    z-index: 1;
+    margin-top:50px;
+}
+
+.map-overlay {
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 10px;
+    box-shadow:0 1px 2px rgba(0,0,0,0.20);
+}
+
+.map-overlay h2,
+.map-overlay p {
+    margin: 0 0 10px;
+}
+</style>
+
+<div id='map'></div>
+
+<div class='map-overlay-container'>
+  <div class='map-overlay'>
+    <h2 id='location-title'></h2>
+    <p id='location-description'></p>
+    <!-- <small>Text credit: <a target='_blank' href='http://www.nycgo.com/neighborhoods'>nycgo.com</a></small> -->
+  </div>
+</div>
+
+<script>
+list = [
+
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Tokyo Skytree",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.8085117,35.7100627]
+                    }
+                },
+
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Sensoji Temple",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.7944666,35.7147651]
+                    }
+                },
+
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Shibuya",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.6984222,35.6594562]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Takeshita Street",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.7009582,35.6715659]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Totti Candy Factory",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.702397,35.6711695]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Harry Hedgehodge Cafe",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.7012982,35.6695903]
+                    }
+                },
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Yanaka Ginza",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.7276552,139.7646081].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Yanaka Cemetery",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.724811,139.7693153].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Ueno Park",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.7140706,139.7718905].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Imperial Palace",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.685175,139.7506108].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Tsukiji Market",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6654861,139.7684781].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Ginza",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6695585,139.7611172].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Dominique Ansel Bakery",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6713225,139.763648].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Yurakucho Gado-shita",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.675069,139.763328].reverse()
+                    }
+                }
+
+,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Robot Bar Restaurant",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6943187,139.7006545].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Akihabara Electric Town",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6996632,139.7691916].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Miraikan Museum",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6192251,139.7745684].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Toshiba Museum",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.5321081,139.6922941].reverse()
+                    }
+                }
+
+,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Sony Arhives",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6256029,139.7309559].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "The Panasonic Showroom",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6494523,139.7586059].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "TEPIA",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6494523,139.7586059].reverse()
+                    }
+                }
+                ,
+                 
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Bamboo Groves",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.0164848,135.6681769].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Monkey Park Iwatayama",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.0164848,135.6681769].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Adahino Temple",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.026772,135.662318].reverse()
+                    }
+                },
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Kurama Onsen",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.1192869,135.774319].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Hirobun (Flowing noodles restaurant)",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.1253736,135.7616815].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Nishiki Market",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.005008,135.7627076].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Kiyomizudera Temple",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.9948561,135.7828523].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Fushimi Inari Shrine",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.9671402,135.770483].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Nara Koen Park",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.685047,135.8408233].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Todaiji Temple",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.685047,135.8408233].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Universal Studios",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.665442,135.4301495].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Osaka Aquarium",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.6545182,135.4267758].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Cup Noodles Museum",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.817981,135.4245233].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Dontonbori",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.6687235,135.4991066].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Mount Niseko-Annupuri",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [42.8484174,140.6370786].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Hiroshima Peace Park",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.3928676,132.4503425].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Mazda Museum",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.3776793,132.5016145].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Hiroshima Castle",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.4014949,132.4574179].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Itsukushima Shrine",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.2958572,132.3177926].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Mount Misen",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.2795413,132.3021456].reverse()
+                    }
+                }];
+list2 = [];
+for (var i=0; i<list.length; i++) {
+  list2.push({
+    "id": (i+1).toString(),
+    "title": list[i].properties.description,
+    "camera": {
+     "center":list[i].geometry.coordinates,
+      "zoom": 25
+    }
+  })
+}
+list2.push({
+    "title": "Experience Japan",
+    // "description": "An itinerary for a day trip to Japan. Starting off in Tokyo and going to Kyoto, Nara, Osaka, and Niseko or Hiroshima you will experience all the fun that Japan has to offer.",
+    "camera": {
+        center: [137.900024,35.689956],
+        zoom: 5
+    }
+});
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiamFyZWR3YXNzZXJtYW4iLCJhIjoiY2plMjE3OHp4NDI3NzJ3bXVoeG91eGVoYiJ9.M2IFtX77R2FgreupHijZkQ';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v9',
+    center: [137.900024,35.689956],
+    maxZoom: 16,
+    minZoom: 5,
+    zoom: 5
+});
+
+var title = document.getElementById('location-title');
+// var description = document.getElementById('location-description');
+
+var locations = list2;
+
+function highlightBorough(code) {
+    // Only show the polygon feature that cooresponds to `borocode` in the data
+    map.setFilter('highlight', ["==", "borocode", code]);
+}
+
+function playback(index) {
+    title.textContent = locations[index].title;
+    // description.textContent = locations[index].description;
+
+    highlightBorough(locations[index].id ? locations[index].id : '');
+
+    // Animate the map position based on camera properties
+    map.flyTo(locations[index].camera);
+
+    map.once('moveend', function() {
+        // Duration the slide is on screen after interaction
+        window.setTimeout(function() {
+            // Increment index
+            index = (index + 1 === locations.length) ? 0 : index + 1;
+            playback(index);
+        }, 5000); // After callback, show the location for 3 seconds.
+    });
+}
+
+// Display the last title/description first
+title.textContent = locations[locations.length - 1].title;
+// description.textContent = locations[locations.length - 1].description;
+
+map.on('load', function() {
+
+    map.addLayer({
+        "id": "highlight",
+        "type": "fill",
+        "source": {
+            "type": "vector",
+            "url": "mapbox://mapbox.8ibmsn6u"
+        },
+        "source-layer": "original",
+        "paint": {
+            "fill-color": "#fd6b50",
+            "fill-opacity": 0.25
+        },
+        "filter": ["==", "borocode", ""]
+    }, 'neighborhood_small_label'); // Place polygon under the neighborhood labels.
+
+    // Start the playback animation for each borough
+    playback(0);
+});
+
+         map.loadImage('https://openclipart.org/image/800px/svg_to_png/262009/Map-Pin.png', function(error, image) {
+        if (error) throw error;
+        map.addImage('cat', image);
+    map.addLayer({
+        "id": "places",
+        "type": "symbol",
+        "source": {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": [
+
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Tokyo Skytree",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.8085117,35.7100627]
+                    }
+                },
+
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Sensoji Temple",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.7944666,35.7147651]
+                    }
+                },
+
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Shibuya",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.6984222,35.6594562]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Takeshita Street",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.7009582,35.6715659]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Totti Candy Factory",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.702397,35.6711695]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Harry Hedgehodge Cafe",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [139.7012982,35.6695903]
+                    }
+                },
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Yanaka Ginza",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.7276552,139.7646081].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Yanaka Cemetery",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.724811,139.7693153].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Ueno Park",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.7140706,139.7718905].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Imperial Palace",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.685175,139.7506108].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Tsukiji Market",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6654861,139.7684781].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Ginza",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6695585,139.7611172].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Dominique Ansel Bakery",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6713225,139.763648].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Yurakucho Gado-shita",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.675069,139.763328].reverse()
+                    }
+                }
+
+,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Robot Bar Restaurant",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6943187,139.7006545].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Akihabara Electric Town",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6996632,139.7691916].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Miraikan Museum",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6192251,139.7745684].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Toshiba Museum",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.5321081,139.6922941].reverse()
+                    }
+                }
+
+,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Sony Arhives",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6256029,139.7309559].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "The Panasonic Showroom",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6494523,139.7586059].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "TEPIA",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.6494523,139.7586059].reverse()
+                    }
+                }
+                ,
+                 
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Bamboo Groves",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.0164848,135.6681769].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Monkey Park Iwatayama",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.0164848,135.6681769].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Adahino Temple",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.026772,135.662318].reverse()
+                    }
+                },
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Kurama Onsen",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.1192869,135.774319].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Hirobun (Flowing noodles restaurant)",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.1253736,135.7616815].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Nishiki Market",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [35.005008,135.7627076].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Kiyomizudera Temple",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.9948561,135.7828523].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Fushimi Inari Shrine",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.9671402,135.770483].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Nara Koen Park",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.685047,135.8408233].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Todaiji Temple",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.685047,135.8408233].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Universal Studios",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.665442,135.4301495].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Osaka Aquarium",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.6545182,135.4267758].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Cup Noodles Museum",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.817981,135.4245233].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Dontonbori",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.6687235,135.4991066].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Mount Niseko-Annupuri",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [42.8484174,140.6370786].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Hiroshima Peace Park",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.3928676,132.4503425].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Mazda Museum",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.3776793,132.5016145].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Hiroshima Castle",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.4014949,132.4574179].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Itsukushima Shrine",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.2958572,132.3177926].reverse()
+                    }
+                }
+                ,
+                 {
+                    "type": "Feature",
+                    "properties": {
+                        "description": "Mount Misen",
+                        "icon": "theatre"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [34.2795413,132.3021456].reverse()
+                    }
+                }
+
+                ]
+            }
+        },
+        "layout": {
+            "icon-image": "cat",
+             "icon-size": 0.05,
+            "icon-allow-overlap": true
+        }
+    });
+     });
+  
+
+    // Create a popup, but don't add it to the map yet.
+    var popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+    });
+
+    map.on('mouseenter', 'places', function(e) {
+        // Change the cursor style as a UI indicator.
+        map.getCanvas().style.cursor = 'pointer';
+
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var description = e.features[0].properties.description;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup.setLngLat(coordinates)
+            .setHTML(description)
+            .addTo(map);
+    });
+
+    map.on('mouseleave', 'places', function() {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+    });
+</script>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../../../dist/js/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="../../../../assets/js/vendor/holder.min.js"></script>
+  </body>
+</html>
